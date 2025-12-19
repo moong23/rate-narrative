@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Header } from '@/components/Header';
 import { CurrencySelector } from '@/components/CurrencySelector';
+import { KPIRow } from '@/components/KPIRow';
 import { RateDisplay } from '@/components/RateDisplay';
 import { PriceChart } from '@/components/PriceChart';
 import { SignalDisplay } from '@/components/SignalDisplay';
@@ -10,16 +11,16 @@ import { useFXData } from '@/hooks/useFXData';
 import { useSignals } from '@/hooks/useSignals';
 import { generateMockNews } from '@/data/mockNews';
 import { CurrencyPair, CURRENCY_PAIRS, TimeRange } from '@/types/fx';
-import { RefreshCw } from 'lucide-react';
+import { RefreshCw, AlertTriangle } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 
 const Index = () => {
   const [selectedPair, setSelectedPair] = useState<CurrencyPair>(CURRENCY_PAIRS[0]);
   const [timeRange, setTimeRange] = useState<TimeRange>('1M');
   
-  const { currentRate, historicalRates, loading, error, refetch } = useFXData(selectedPair, timeRange);
+  const { currentRate, historicalRates, kpiMetrics, loading, error, refetch } = useFXData(selectedPair, timeRange);
   const news = generateMockNews(selectedPair.id);
-  const signal = useSignals(selectedPair, historicalRates, news);
+  const signal = useSignals(selectedPair, kpiMetrics, news);
 
   return (
     <div className="min-h-screen bg-background">
@@ -34,8 +35,8 @@ const Index = () => {
                 Currency Intelligence
               </h1>
               <p className="text-muted-foreground max-w-xl">
-                Real-time exchange rates, trend analysis, and AI-powered trading signals. 
-                Select a currency pair to explore insights.
+                Real-time exchange rates with 7d/30d moving averages, volatility analysis, 
+                and weighted trading signals. Select a currency pair to explore.
               </p>
             </div>
             
@@ -64,10 +65,14 @@ const Index = () => {
 
         {/* Error State */}
         {error && (
-          <div className="mb-6 p-4 rounded-lg bg-destructive/10 border border-destructive/30 text-destructive">
-            {error}
+          <div className="mb-6 p-4 rounded-lg bg-destructive/10 border border-destructive/30 flex items-center gap-3">
+            <AlertTriangle className="w-5 h-5 text-destructive" />
+            <span className="text-destructive">{error}</span>
           </div>
         )}
+
+        {/* KPI Row */}
+        <KPIRow metrics={kpiMetrics} pair={selectedPair} loading={loading} />
 
         {/* Main Grid */}
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
@@ -88,6 +93,25 @@ const Index = () => {
             <NewsPanel news={news} loading={loading} />
           </div>
         </div>
+
+        {/* Signal Formula Explainer */}
+        <section className="mt-8 glass-card p-6 animate-fade-in">
+          <h3 className="text-lg font-semibold mb-4">Signal Methodology</h3>
+          <div className="grid md:grid-cols-2 gap-6">
+            <div>
+              <h4 className="text-sm font-medium text-muted-foreground mb-2">Formula</h4>
+              <code className="block p-3 rounded-lg bg-muted/50 font-mono text-sm">
+                Score = 0.6 × Trend + 0.4 × Sentiment − 0.2 × VolPenalty
+              </code>
+            </div>
+            <div className="space-y-2 text-sm">
+              <p><strong>Trend:</strong> +1 if 7d MA &gt; 30d MA, else -1</p>
+              <p><strong>Sentiment:</strong> Average news score (-1 to +1)</p>
+              <p><strong>Vol Penalty:</strong> 1 if 14d σ &gt; 1.5%, else 0</p>
+              <p><strong>Signal:</strong> Long if &gt;0.2, Short if &lt;-0.2, else Neutral</p>
+            </div>
+          </div>
+        </section>
 
         {/* Footer Disclaimer */}
         <footer className="mt-12 pt-8 border-t border-border/50 text-center">

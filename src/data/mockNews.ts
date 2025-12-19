@@ -10,7 +10,7 @@ const generateMockNews = (pairId: string): NewsArticle[] => {
         publishedAt: new Date(Date.now() - 2 * 60 * 60 * 1000),
         summary: 'The Bank of Korea maintained its benchmark interest rate, citing global economic headwinds and domestic inflation concerns.',
         sentiment: 'neutral',
-        sentimentScore: 0.5,
+        sentimentScore: 0.0,
         url: '#',
       },
       {
@@ -19,8 +19,8 @@ const generateMockNews = (pairId: string): NewsArticle[] => {
         source: 'Bloomberg',
         publishedAt: new Date(Date.now() - 5 * 60 * 60 * 1000),
         summary: 'South Korean exports exceeded expectations, boosting the won against major currencies.',
-        sentiment: 'bearish',
-        sentimentScore: 0.7,
+        sentiment: 'bearish', // USD bearish = KRW bullish
+        sentimentScore: -0.7,
         url: '#',
       },
       {
@@ -30,7 +30,7 @@ const generateMockNews = (pairId: string): NewsArticle[] => {
         publishedAt: new Date(Date.now() - 8 * 60 * 60 * 1000),
         summary: 'Traders await Federal Reserve guidance as USD/KRW consolidates near key support levels.',
         sentiment: 'neutral',
-        sentimentScore: 0.4,
+        sentimentScore: -0.1,
         url: '#',
       },
     ],
@@ -41,8 +41,8 @@ const generateMockNews = (pairId: string): NewsArticle[] => {
         source: 'Nikkei',
         publishedAt: new Date(Date.now() - 1 * 60 * 60 * 1000),
         summary: 'BOJ Governor hints at further rate hikes as inflation remains above target.',
-        sentiment: 'bearish',
-        sentimentScore: 0.8,
+        sentiment: 'bearish', // USD bearish = JPY bullish
+        sentimentScore: -0.8,
         url: '#',
       },
       {
@@ -52,7 +52,7 @@ const generateMockNews = (pairId: string): NewsArticle[] => {
         publishedAt: new Date(Date.now() - 4 * 60 * 60 * 1000),
         summary: 'Markets brace for potential currency intervention as USD/JPY approaches key psychological levels.',
         sentiment: 'bearish',
-        sentimentScore: 0.6,
+        sentimentScore: -0.6,
         url: '#',
       },
       {
@@ -62,7 +62,7 @@ const generateMockNews = (pairId: string): NewsArticle[] => {
         publishedAt: new Date(Date.now() - 12 * 60 * 60 * 1000),
         summary: 'Better-than-expected trade data provides support for the Japanese currency.',
         sentiment: 'bearish',
-        sentimentScore: 0.5,
+        sentimentScore: -0.5,
         url: '#',
       },
     ],
@@ -74,7 +74,7 @@ const generateMockNews = (pairId: string): NewsArticle[] => {
         publishedAt: new Date(Date.now() - 3 * 60 * 60 * 1000),
         summary: 'European Central Bank policymakers show division on the speed of monetary easing.',
         sentiment: 'neutral',
-        sentimentScore: 0.5,
+        sentimentScore: 0.1,
         url: '#',
       },
       {
@@ -126,7 +126,7 @@ const generateMockNews = (pairId: string): NewsArticle[] => {
         publishedAt: new Date(Date.now() - 14 * 60 * 60 * 1000),
         summary: 'GBP/USD takes a breather after posting significant gains amid dollar weakness.',
         sentiment: 'neutral',
-        sentimentScore: 0.4,
+        sentimentScore: 0.2,
         url: '#',
       },
     ],
