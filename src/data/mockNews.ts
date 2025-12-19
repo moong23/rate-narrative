@@ -1,0 +1,138 @@
+import { NewsArticle } from '@/types/fx';
+
+const generateMockNews = (pairId: string): NewsArticle[] => {
+  const newsTemplates: Record<string, NewsArticle[]> = {
+    USD_KRW: [
+      {
+        id: '1',
+        title: 'Bank of Korea Holds Rates Steady Amid Global Uncertainty',
+        source: 'Reuters',
+        publishedAt: new Date(Date.now() - 2 * 60 * 60 * 1000),
+        summary: 'The Bank of Korea maintained its benchmark interest rate, citing global economic headwinds and domestic inflation concerns.',
+        sentiment: 'neutral',
+        sentimentScore: 0.5,
+        url: '#',
+      },
+      {
+        id: '2',
+        title: 'Korean Won Strengthens on Export Data Beat',
+        source: 'Bloomberg',
+        publishedAt: new Date(Date.now() - 5 * 60 * 60 * 1000),
+        summary: 'South Korean exports exceeded expectations, boosting the won against major currencies.',
+        sentiment: 'bearish',
+        sentimentScore: 0.7,
+        url: '#',
+      },
+      {
+        id: '3',
+        title: 'Fed Rate Decision Weighs on Dollar-Won Pair',
+        source: 'Financial Times',
+        publishedAt: new Date(Date.now() - 8 * 60 * 60 * 1000),
+        summary: 'Traders await Federal Reserve guidance as USD/KRW consolidates near key support levels.',
+        sentiment: 'neutral',
+        sentimentScore: 0.4,
+        url: '#',
+      },
+    ],
+    USD_JPY: [
+      {
+        id: '4',
+        title: 'Bank of Japan Signals Continued Policy Normalization',
+        source: 'Nikkei',
+        publishedAt: new Date(Date.now() - 1 * 60 * 60 * 1000),
+        summary: 'BOJ Governor hints at further rate hikes as inflation remains above target.',
+        sentiment: 'bearish',
+        sentimentScore: 0.8,
+        url: '#',
+      },
+      {
+        id: '5',
+        title: 'Yen Volatility Surges on Intervention Speculation',
+        source: 'Reuters',
+        publishedAt: new Date(Date.now() - 4 * 60 * 60 * 1000),
+        summary: 'Markets brace for potential currency intervention as USD/JPY approaches key psychological levels.',
+        sentiment: 'bearish',
+        sentimentScore: 0.6,
+        url: '#',
+      },
+      {
+        id: '6',
+        title: 'Japanese Trade Balance Improves, Supporting Yen',
+        source: 'Bloomberg',
+        publishedAt: new Date(Date.now() - 12 * 60 * 60 * 1000),
+        summary: 'Better-than-expected trade data provides support for the Japanese currency.',
+        sentiment: 'bearish',
+        sentimentScore: 0.5,
+        url: '#',
+      },
+    ],
+    EUR_USD: [
+      {
+        id: '7',
+        title: 'ECB Officials Debate Pace of Rate Cuts',
+        source: 'Reuters',
+        publishedAt: new Date(Date.now() - 3 * 60 * 60 * 1000),
+        summary: 'European Central Bank policymakers show division on the speed of monetary easing.',
+        sentiment: 'neutral',
+        sentimentScore: 0.5,
+        url: '#',
+      },
+      {
+        id: '8',
+        title: 'Eurozone Manufacturing PMI Shows Recovery Signs',
+        source: 'Financial Times',
+        publishedAt: new Date(Date.now() - 6 * 60 * 60 * 1000),
+        summary: 'Factory activity in the euro area beats expectations, lifting the single currency.',
+        sentiment: 'bullish',
+        sentimentScore: 0.7,
+        url: '#',
+      },
+      {
+        id: '9',
+        title: 'Dollar Index Retreats on Soft US Data',
+        source: 'Bloomberg',
+        publishedAt: new Date(Date.now() - 10 * 60 * 60 * 1000),
+        summary: 'Weaker US economic indicators pressure the greenback, benefiting EUR/USD bulls.',
+        sentiment: 'bullish',
+        sentimentScore: 0.6,
+        url: '#',
+      },
+    ],
+    GBP_USD: [
+      {
+        id: '10',
+        title: 'Bank of England Holds Hawkish Stance Despite Slowdown',
+        source: 'Reuters',
+        publishedAt: new Date(Date.now() - 2 * 60 * 60 * 1000),
+        summary: 'BOE signals reluctance to cut rates aggressively, supporting sterling.',
+        sentiment: 'bullish',
+        sentimentScore: 0.7,
+        url: '#',
+      },
+      {
+        id: '11',
+        title: 'UK Inflation Remains Sticky, Pound Gains',
+        source: 'Bloomberg',
+        publishedAt: new Date(Date.now() - 7 * 60 * 60 * 1000),
+        summary: 'Persistent inflationary pressures keep rate cut expectations in check.',
+        sentiment: 'bullish',
+        sentimentScore: 0.6,
+        url: '#',
+      },
+      {
+        id: '12',
+        title: 'Sterling Consolidates After Strong Weekly Performance',
+        source: 'Financial Times',
+        publishedAt: new Date(Date.now() - 14 * 60 * 60 * 1000),
+        summary: 'GBP/USD takes a breather after posting significant gains amid dollar weakness.',
+        sentiment: 'neutral',
+        sentimentScore: 0.4,
+        url: '#',
+      },
+    ],
+  };
+
+  return newsTemplates[pairId] || [];
+};
+
+export { generateMockNews };
