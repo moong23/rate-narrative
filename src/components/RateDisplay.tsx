@@ -19,6 +19,7 @@ export function RateDisplay({ rate, loading }: RateDisplayProps) {
   }
 
   const isPositive = rate.change >= 0;
+  const is7dPositive = rate.change7d >= 0;
 
   return (
     <div className="glass-card p-6 animate-fade-in">
@@ -47,20 +48,38 @@ export function RateDisplay({ rate, loading }: RateDisplayProps) {
           })}
         </div>
         
-        <div className={cn(
-          'flex items-center gap-2 text-sm font-medium',
-          isPositive ? 'text-bullish' : 'text-bearish'
-        )}>
-          {isPositive ? (
-            <TrendingUp className="w-4 h-4" />
-          ) : (
-            <TrendingDown className="w-4 h-4" />
-          )}
-          <span>
-            {isPositive ? '+' : ''}
-            {rate.change.toFixed(4)} ({isPositive ? '+' : ''}
-            {rate.changePercent.toFixed(2)}%)
-          </span>
+        <div className="flex items-center gap-4">
+          <div className={cn(
+            'flex items-center gap-1.5 text-sm font-medium',
+            isPositive ? 'text-bullish' : 'text-bearish'
+          )}>
+            {isPositive ? (
+              <TrendingUp className="w-4 h-4" />
+            ) : (
+              <TrendingDown className="w-4 h-4" />
+            )}
+            <span>
+              {isPositive ? '+' : ''}
+              {rate.changePercent.toFixed(2)}%
+            </span>
+            <span className="text-xs text-muted-foreground">1d</span>
+          </div>
+          
+          <div className={cn(
+            'flex items-center gap-1.5 text-sm font-medium',
+            is7dPositive ? 'text-bullish' : 'text-bearish'
+          )}>
+            {is7dPositive ? (
+              <TrendingUp className="w-4 h-4" />
+            ) : (
+              <TrendingDown className="w-4 h-4" />
+            )}
+            <span>
+              {is7dPositive ? '+' : ''}
+              {rate.change7dPercent.toFixed(2)}%
+            </span>
+            <span className="text-xs text-muted-foreground">7d</span>
+          </div>
         </div>
       </div>
 

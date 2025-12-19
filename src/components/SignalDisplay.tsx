@@ -62,50 +62,59 @@ export function SignalDisplay({ signal, loading }: SignalDisplayProps) {
           <SignalIcon className="w-4 h-4" />
           {config.label}
         </div>
-        <div className={cn('px-3 py-1 rounded-full text-sm', config.bgColor, config.color)}>
-          Score: {signal.finalScore.toFixed(1)}
+        <div className={cn('px-3 py-1 rounded-full text-sm font-mono', config.bgColor, config.color)}>
+          Score: {signal.finalScore.toFixed(2)}
         </div>
       </div>
 
-      <div className="grid grid-cols-3 gap-4 mb-6">
-        <div className={cn('p-3 rounded-lg', config.bgColor)}>
-          <div className="flex items-center gap-1.5 text-xs text-muted-foreground mb-1">
+      {/* Score breakdown */}
+      <div className="grid grid-cols-3 gap-3 mb-6">
+        <div className={cn('p-3 rounded-lg text-center', config.bgColor)}>
+          <div className="flex items-center justify-center gap-1.5 text-xs text-muted-foreground mb-1">
             <BarChart3 className="w-3.5 h-3.5" />
             Trend
           </div>
-          <p className={cn('font-mono font-semibold', 
-            signal.trendScore > 0 ? 'text-bullish' : signal.trendScore < 0 ? 'text-bearish' : 'text-muted-foreground'
+          <p className={cn('font-mono font-semibold text-lg', 
+            signal.trendScore > 0 ? 'text-bullish' : 'text-bearish'
           )}>
-            {signal.trendScore > 0 ? '+' : ''}{signal.trendScore.toFixed(1)}
+            {signal.trendScore > 0 ? '+1' : '-1'}
           </p>
+          <p className="text-xs text-muted-foreground">×0.6</p>
         </div>
-        <div className={cn('p-3 rounded-lg', config.bgColor)}>
-          <div className="flex items-center gap-1.5 text-xs text-muted-foreground mb-1">
+        <div className={cn('p-3 rounded-lg text-center', config.bgColor)}>
+          <div className="flex items-center justify-center gap-1.5 text-xs text-muted-foreground mb-1">
             <Newspaper className="w-3.5 h-3.5" />
             Sentiment
           </div>
-          <p className={cn('font-mono font-semibold',
+          <p className={cn('font-mono font-semibold text-lg',
             signal.newsScore > 0 ? 'text-bullish' : signal.newsScore < 0 ? 'text-bearish' : 'text-muted-foreground'
           )}>
-            {signal.newsScore > 0 ? '+' : ''}{signal.newsScore.toFixed(1)}
+            {signal.newsScore > 0 ? '+' : ''}{signal.newsScore.toFixed(2)}
           </p>
+          <p className="text-xs text-muted-foreground">×0.4</p>
         </div>
-        <div className={cn('p-3 rounded-lg', config.bgColor)}>
-          <div className="flex items-center gap-1.5 text-xs text-muted-foreground mb-1">
+        <div className={cn('p-3 rounded-lg text-center', config.bgColor)}>
+          <div className="flex items-center justify-center gap-1.5 text-xs text-muted-foreground mb-1">
             <Zap className="w-3.5 h-3.5" />
-            Volatility
+            Vol Penalty
           </div>
-          <p className="font-mono font-semibold text-muted-foreground">
-            -{signal.volatilityPenalty.toFixed(1)}
+          <p className="font-mono font-semibold text-lg text-muted-foreground">
+            -{signal.volatilityPenalty}
           </p>
+          <p className="text-xs text-muted-foreground">×0.2</p>
         </div>
       </div>
 
+      {/* Rationale bullets */}
       <div className="p-4 rounded-lg bg-muted/30 border border-border/50">
-        <h4 className="text-sm font-medium mb-2 text-muted-foreground">Analysis Rationale</h4>
-        <p className="text-sm leading-relaxed text-foreground/90">
-          {signal.rationale}
-        </p>
+        <h4 className="text-sm font-medium mb-3 text-muted-foreground">Why this signal?</h4>
+        <ul className="space-y-2.5">
+          {signal.rationale.map((point, i) => (
+            <li key={i} className="text-sm leading-relaxed text-foreground/90">
+              {point}
+            </li>
+          ))}
+        </ul>
       </div>
 
       <p className="mt-4 text-xs text-muted-foreground text-center">
