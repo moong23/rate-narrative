@@ -6,8 +6,10 @@ import { RateDisplay } from '@/components/RateDisplay';
 import { PriceChart } from '@/components/PriceChart';
 import { SignalDisplay } from '@/components/SignalDisplay';
 import { NewsPanel } from '@/components/NewsPanel';
+import { FXCalendarPanel } from '@/components/FXCalendarPanel';
 import { PDFExport } from '@/components/PDFExport';
 import { useFXData } from '@/hooks/useFXData';
+import { useFXCalendar } from '@/hooks/useFXCalendar';
 import { useSignals } from '@/hooks/useSignals';
 import { generateMockNews } from '@/data/mockNews';
 import { CurrencyPair, CURRENCY_PAIRS, TimeRange } from '@/types/fx';
@@ -19,6 +21,7 @@ const Index = () => {
   const [timeRange, setTimeRange] = useState<TimeRange>('1M');
   
   const { currentRate, historicalRates, kpiMetrics, loading, error, refetch } = useFXData(selectedPair, timeRange);
+  const { events: calendarEvents, loading: calendarLoading } = useFXCalendar(selectedPair);
   const news = generateMockNews(selectedPair.id);
   const signal = useSignals(selectedPair, kpiMetrics, news);
 
@@ -90,9 +93,10 @@ const Index = () => {
             />
           </section>
           
-          {/* Right Column - Signal & News */}
+          {/* Right Column - Signal, Calendar & News */}
           <aside className="space-y-6" aria-label="Analysis and news">
             <SignalDisplay signal={signal} loading={loading} />
+            <FXCalendarPanel events={calendarEvents} pair={selectedPair} loading={calendarLoading} />
             <NewsPanel news={news} loading={loading} />
           </aside>
         </div>
