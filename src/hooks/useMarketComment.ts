@@ -29,6 +29,7 @@ export function useMarketComment(
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const lastFetchRef = useRef<number>(0);
+  const isFetchingRef = useRef<boolean>(false);
   const cacheRef = useRef<Map<string, { comment: string; timestamp: number }>>(new Map());
 
   const getCacheKey = useCallback(() => {
@@ -36,6 +37,11 @@ export function useMarketComment(
   }, [pair.base, pair.quote, agentId, trend]);
 
   const fetchComment = useCallback(async () => {
+    // Prevent concurrent requests
+    if (isFetchingRef.current) {
+      return;
+    }
+
     const now = Date.now();
     const cacheKey = getCacheKey();
     
@@ -47,10 +53,16 @@ export function useMarketComment(
       return;
     }
 
-    // Rate limit: minimum 3 seconds between requests
-    if (now - lastFetchRef.current < 3000) {
+    // Rate limit: minimum 10 seconds between requests to avoid hitting limits
+    if (now - lastFetchRef.current < 10000) {
+      // Use fallback while rate limited
+      if (!comment) {
+        setComment(FALLBACK_COMMENTS[agentId]);
+      }
       return;
     }
+    
+    isFetchingRef.current = true;
     lastFetchRef.current = now;
 
     setLoading(true);
@@ -91,8 +103,9 @@ export function useMarketComment(
       setError(null);
     } finally {
       setLoading(false);
+      isFetchingRef.current = false;
     }
-  }, [pair.base, pair.quote, agentId, trend, events, getCacheKey]);
+  }, [pair.base, pair.quote, agentId, trend, events, getCacheKey, comment]);
 
   useEffect(() => {
     fetchComment();
