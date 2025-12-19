@@ -11,38 +11,38 @@ export interface ToneAgent {
 export const TONE_AGENTS: ToneAgent[] = [
   {
     id: 'pro',
-    name: 'Analyst Pro',
+    name: '분석가 프로',
     emoji: '📊',
-    description: 'Calm, concise, Bloomberg-style',
-    style: 'Write in a neutral analyst tone, like a Bloomberg FX strategist. Keep it professional and data-driven.'
+    description: '차분하고 간결한 블룸버그 스타일',
+    style: '블룸버그 FX 전략가처럼 중립적이고 차분한 분석가 톤으로 한국어로 작성하세요. 전문적이고 데이터 중심으로.'
   },
   {
     id: 'cheerful',
-    name: 'Coach Sunny',
+    name: '코치 써니',
     emoji: '☀️',
-    description: 'Upbeat, simple, emoji-rich',
-    style: 'Write in a friendly, emoji-rich tone for a curious beginner. Be encouraging and positive.'
+    description: '밝고 쉬운 톤, 이모지 포함',
+    style: '초보자를 위해 친근하고 이모지가 풍부한 톤으로 한국어로 작성하세요. 격려하고 긍정적으로.'
   },
   {
     id: 'dry',
-    name: 'Sarcastic Bot',
+    name: '냉소봇',
     emoji: '🙄',
-    description: 'Deadpan, cynical',
-    style: 'Write in a sarcastic, blunt tone with short sentences. Be witty but not mean.'
+    description: '무심하고 냉소적인 짧은 문장',
+    style: '비꼬는 듯하고 무심한 톤으로 짧은 문장으로 한국어로 작성하세요. 재치있지만 악의적이지 않게.'
   },
   {
     id: 'professor',
-    name: 'FX Scholar',
+    name: 'FX 교수님',
     emoji: '🎓',
-    description: 'Formal, detailed',
-    style: 'Write like a macroeconomics professor—formal and precise. Include a brief educational insight.'
+    description: '격식 있고 학문적인 설명',
+    style: '거시경제학 교수처럼 격식있고 정확하게 한국어로 작성하세요. 간단한 교육적 인사이트를 포함하세요.'
   },
   {
     id: 'zen',
-    name: 'Calm Monk',
+    name: '명상 스님',
     emoji: '🧘',
-    description: 'Meditative, balanced',
-    style: 'Write like a calm, meditative monk observing the market. Be philosophical and balanced.'
+    description: '명상가처럼 느리고 평화로운 어조',
+    style: '시장을 관찰하는 차분한 명상가처럼 한국어로 작성하세요. 철학적이고 균형잡힌 시각으로.'
   }
 ];
 
