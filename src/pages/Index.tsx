@@ -11,7 +11,7 @@ import { useFXData } from '@/hooks/useFXData';
 import { useSignals } from '@/hooks/useSignals';
 import { generateMockNews } from '@/data/mockNews';
 import { CurrencyPair, CURRENCY_PAIRS, TimeRange } from '@/types/fx';
-import { RefreshCw, AlertTriangle } from 'lucide-react';
+import { RefreshCw, AlertCircle } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 
 const Index = () => {
@@ -26,17 +26,17 @@ const Index = () => {
     <div className="min-h-screen bg-background">
       <Header />
       
-      <main className="container mx-auto px-4 sm:px-6 py-8">
+      <main className="container mx-auto px-6 py-8">
         {/* Hero Section */}
-        <section className="mb-8 animate-fade-in">
+        <section className="mb-8 animate-fade-in" aria-labelledby="page-title">
           <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-4 mb-6">
             <div>
-              <h1 className="text-3xl sm:text-4xl font-bold tracking-tight mb-2">
-                Currency Intelligence
+              <h1 id="page-title" className="text-3xl font-bold tracking-tight mb-2">
+                Pick a pair. See what's moving it.
               </h1>
               <p className="text-muted-foreground max-w-xl">
-                Real-time exchange rates with 7d/30d moving averages, volatility analysis, 
-                and weighted trading signals. Select a currency pair to explore.
+                Real-time exchange rates with moving averages, volatility analysis, 
+                and weighted trading signals based on trend and sentiment.
               </p>
             </div>
             
@@ -53,9 +53,9 @@ const Index = () => {
                 size="icon"
                 onClick={refetch}
                 disabled={loading}
-                className={loading ? 'animate-spin' : ''}
+                aria-label="Refresh data"
               >
-                <RefreshCw className="w-4 h-4" />
+                <RefreshCw className={`w-4 h-4 ${loading ? 'animate-spin' : ''}`} />
               </Button>
             </div>
           </div>
@@ -65,9 +65,12 @@ const Index = () => {
 
         {/* Error State */}
         {error && (
-          <div className="mb-6 p-4 rounded-lg bg-destructive/10 border border-destructive/30 flex items-center gap-3">
-            <AlertTriangle className="w-5 h-5 text-destructive" />
-            <span className="text-destructive">{error}</span>
+          <div 
+            className="mb-6 p-4 rounded-lg bg-destructive/10 border border-destructive/20 flex items-center gap-3"
+            role="alert"
+          >
+            <AlertCircle className="w-5 h-5 text-destructive flex-shrink-0" aria-hidden="true" />
+            <span className="text-destructive">{error}. Couldn't fetch rates. Try again in 30s.</span>
           </div>
         )}
 
@@ -77,7 +80,7 @@ const Index = () => {
         {/* Main Grid */}
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
           {/* Left Column - Rate & Chart */}
-          <div className="lg:col-span-2 space-y-6">
+          <section className="lg:col-span-2 space-y-6" aria-label="Price data">
             <RateDisplay rate={currentRate} loading={loading} />
             <PriceChart 
               data={historicalRates} 
@@ -85,41 +88,40 @@ const Index = () => {
               onTimeRangeChange={setTimeRange}
               loading={loading}
             />
-          </div>
+          </section>
           
           {/* Right Column - Signal & News */}
-          <div className="space-y-6">
+          <aside className="space-y-6" aria-label="Analysis and news">
             <SignalDisplay signal={signal} loading={loading} />
             <NewsPanel news={news} loading={loading} />
-          </div>
+          </aside>
         </div>
 
-        {/* Signal Formula Explainer */}
-        <section className="mt-8 glass-card p-6 animate-fade-in">
-          <h3 className="text-lg font-semibold mb-4">Signal Methodology</h3>
+        {/* Methodology */}
+        <section className="mt-8 research-card p-6 animate-fade-in" aria-labelledby="methodology-title">
+          <h2 id="methodology-title" className="text-xl font-semibold mb-4">Signal Methodology</h2>
           <div className="grid md:grid-cols-2 gap-6">
             <div>
-              <h4 className="text-sm font-medium text-muted-foreground mb-2">Formula</h4>
-              <code className="block p-3 rounded-lg bg-muted/50 font-mono text-sm">
-                Score = 0.6 × Trend + 0.4 × Sentiment − 0.2 × VolPenalty
+              <h3 className="text-sm font-medium text-muted-foreground mb-2">Formula</h3>
+              <code className="block p-4 rounded-lg bg-muted/50 font-mono text-sm border border-border">
+                Score = 0.6 × Trend + 0.4 × News − 0.2 × Vol
               </code>
             </div>
             <div className="space-y-2 text-sm">
               <p><strong>Trend:</strong> +1 if 7d MA &gt; 30d MA, else -1</p>
-              <p><strong>Sentiment:</strong> Average news score (-1 to +1)</p>
-              <p><strong>Vol Penalty:</strong> 1 if 14d σ &gt; 1.5%, else 0</p>
-              <p><strong>Signal:</strong> Long if &gt;0.2, Short if &lt;-0.2, else Neutral</p>
+              <p><strong>News:</strong> Average sentiment score (-1 to +1)</p>
+              <p><strong>Vol:</strong> Penalty of 1 if 14d σ &gt; 1.5%</p>
+              <p><strong>Signal:</strong> Long &gt;0.2 | Short &lt;-0.2 | Neutral</p>
             </div>
           </div>
         </section>
 
-        {/* Footer Disclaimer */}
-        <footer className="mt-12 pt-8 border-t border-border/50 text-center">
-          <p className="text-sm text-muted-foreground max-w-2xl mx-auto">
-            <span className="text-primary">⚠️ Research Use Only:</span> This platform is designed for 
+        {/* Footer */}
+        <footer className="mt-12 pt-8 border-t border-border text-center" role="contentinfo">
+          <p className="text-caption max-w-2xl mx-auto">
+            <span className="text-primary font-medium">⚠️ Research Use Only:</span> This platform is designed for 
             educational and research purposes. The trading signals and analysis provided do not 
-            constitute financial advice. Always consult with a qualified financial advisor before 
-            making investment decisions.
+            constitute financial advice.
           </p>
         </footer>
       </main>

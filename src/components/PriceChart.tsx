@@ -1,8 +1,6 @@
 import { HistoricalRate, TimeRange } from '@/types/fx';
 import { cn } from '@/lib/utils';
 import {
-  LineChart,
-  Line,
   XAxis,
   YAxis,
   Tooltip,
@@ -34,8 +32,8 @@ export function PriceChart({ data, timeRange, onTimeRangeChange, loading }: Pric
   const CustomTooltip = ({ active, payload, label }: any) => {
     if (active && payload && payload.length) {
       return (
-        <div className="glass-card p-3 border border-border/50">
-          <p className="text-xs text-muted-foreground mb-1">
+        <div className="research-card p-3 text-sm" role="tooltip">
+          <p className="text-caption mb-1">
             {new Date(label).toLocaleDateString('en-US', { 
               weekday: 'short',
               month: 'short', 
@@ -43,7 +41,7 @@ export function PriceChart({ data, timeRange, onTimeRangeChange, loading }: Pric
               year: 'numeric'
             })}
           </p>
-          <p className="font-mono font-semibold text-foreground">
+          <p className="font-mono font-semibold">
             {payload[0].value.toLocaleString(undefined, { minimumFractionDigits: 4 })}
           </p>
         </div>
@@ -53,19 +51,21 @@ export function PriceChart({ data, timeRange, onTimeRangeChange, loading }: Pric
   };
 
   return (
-    <div className="glass-card p-6 animate-fade-in">
+    <article className="research-card p-6 animate-fade-in" role="region" aria-label="Price history chart">
       <div className="flex items-center justify-between mb-6">
-        <h3 className="text-lg font-semibold">Price History</h3>
-        <div className="flex gap-1 bg-muted/50 rounded-lg p-1">
+        <h2 className="text-xl font-semibold">Price History</h2>
+        <div className="flex gap-1 bg-muted/50 rounded-lg p-1" role="tablist" aria-label="Time range selection">
           {timeRanges.map((range) => (
             <button
               key={range}
               onClick={() => onTimeRangeChange(range)}
+              role="tab"
+              aria-selected={timeRange === range}
               className={cn(
                 'px-3 py-1.5 text-sm font-medium rounded-md transition-all duration-200',
                 timeRange === range
-                  ? 'bg-primary text-primary-foreground shadow-sm'
-                  : 'text-muted-foreground hover:text-foreground hover:bg-muted'
+                  ? 'bg-card text-foreground shadow-sm'
+                  : 'text-muted-foreground hover:text-foreground'
               )}
             >
               {range}
@@ -74,24 +74,24 @@ export function PriceChart({ data, timeRange, onTimeRangeChange, loading }: Pric
         </div>
       </div>
 
-      <div className="h-[300px]">
+      <div className="h-[280px]" role="img" aria-label={`Price chart showing ${timeRange} data with ${isPositiveTrend ? 'positive' : 'negative'} trend`}>
         {loading ? (
           <div className="h-full flex items-center justify-center">
-            <div className="w-8 h-8 border-2 border-primary border-t-transparent rounded-full animate-spin" />
+            <div className="w-6 h-6 border-2 border-primary border-t-transparent rounded-full animate-spin" aria-label="Loading chart" />
           </div>
         ) : (
           <ResponsiveContainer width="100%" height="100%">
-            <AreaChart data={data} margin={{ top: 10, right: 10, left: 0, bottom: 0 }}>
+            <AreaChart data={data} margin={{ top: 8, right: 8, left: 0, bottom: 0 }}>
               <defs>
                 <linearGradient id="colorRate" x1="0" y1="0" x2="0" y2="1">
                   <stop
                     offset="5%"
-                    stopColor={isPositiveTrend ? 'hsl(142, 71%, 45%)' : 'hsl(0, 84%, 60%)'}
-                    stopOpacity={0.3}
+                    stopColor={isPositiveTrend ? '#10B981' : '#EF4444'}
+                    stopOpacity={0.2}
                   />
                   <stop
                     offset="95%"
-                    stopColor={isPositiveTrend ? 'hsl(142, 71%, 45%)' : 'hsl(0, 84%, 60%)'}
+                    stopColor={isPositiveTrend ? '#10B981' : '#EF4444'}
                     stopOpacity={0}
                   />
                 </linearGradient>
@@ -99,7 +99,7 @@ export function PriceChart({ data, timeRange, onTimeRangeChange, loading }: Pric
               <XAxis
                 dataKey="date"
                 tickFormatter={formatDate}
-                stroke="hsl(215, 20%, 35%)"
+                stroke="hsl(215, 14%, 64%)"
                 fontSize={12}
                 tickLine={false}
                 axisLine={false}
@@ -107,25 +107,26 @@ export function PriceChart({ data, timeRange, onTimeRangeChange, loading }: Pric
               />
               <YAxis
                 domain={['dataMin', 'dataMax']}
-                stroke="hsl(215, 20%, 35%)"
+                stroke="hsl(215, 14%, 64%)"
                 fontSize={12}
                 tickLine={false}
                 axisLine={false}
                 tickFormatter={(value) => value.toFixed(2)}
-                width={60}
+                width={56}
               />
               <Tooltip content={<CustomTooltip />} />
               <Area
                 type="monotone"
                 dataKey="rate"
-                stroke={isPositiveTrend ? 'hsl(142, 71%, 45%)' : 'hsl(0, 84%, 60%)'}
+                stroke={isPositiveTrend ? '#10B981' : '#EF4444'}
                 strokeWidth={2}
                 fill="url(#colorRate)"
+                animationDuration={300}
               />
             </AreaChart>
           </ResponsiveContainer>
         )}
       </div>
-    </div>
+    </article>
   );
 }

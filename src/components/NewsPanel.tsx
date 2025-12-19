@@ -13,22 +13,26 @@ const formatTimeAgo = (date: Date): string => {
   const diffHours = Math.floor(diffMs / (1000 * 60 * 60));
   
   if (diffHours < 1) return 'Just now';
-  if (diffHours === 1) return '1 hour ago';
-  if (diffHours < 24) return `${diffHours} hours ago`;
-  return `${Math.floor(diffHours / 24)} days ago`;
+  if (diffHours === 1) return '1h ago';
+  if (diffHours < 24) return `${diffHours}h ago`;
+  return `${Math.floor(diffHours / 24)}d ago`;
 };
 
-const SentimentIcon = ({ sentiment }: { sentiment: 'bullish' | 'bearish' | 'neutral' }) => {
+const SentimentIcon = ({ sentiment, score }: { sentiment: 'bullish' | 'bearish' | 'neutral'; score: number }) => {
   const config = {
-    bullish: { icon: TrendingUp, className: 'text-bullish bg-bullish/20' },
-    bearish: { icon: TrendingDown, className: 'text-bearish bg-bearish/20' },
+    bullish: { icon: TrendingUp, className: 'text-bullish bg-bullish/10' },
+    bearish: { icon: TrendingDown, className: 'text-bearish bg-bearish/10' },
     neutral: { icon: Minus, className: 'text-muted-foreground bg-muted' },
   };
   
   const { icon: Icon, className } = config[sentiment];
   
   return (
-    <div className={cn('p-1.5 rounded-md', className)}>
+    <div 
+      className={cn('p-1.5 rounded-md', className)} 
+      title={`Sentiment: ${sentiment} (${(score * 100).toFixed(0)}%)`}
+      aria-label={`${sentiment} sentiment`}
+    >
       <Icon className="w-3.5 h-3.5" />
     </div>
   );
@@ -37,49 +41,57 @@ const SentimentIcon = ({ sentiment }: { sentiment: 'bullish' | 'bearish' | 'neut
 export function NewsPanel({ news, loading }: NewsPanelProps) {
   if (loading) {
     return (
-      <div className="glass-card p-6 animate-pulse">
-        <div className="h-6 w-32 bg-muted rounded mb-4" />
+      <aside className="research-card p-6 animate-pulse" aria-label="Market news loading">
+        <div className="h-5 w-28 bg-muted rounded mb-4" />
         {[1, 2, 3].map((i) => (
           <div key={i} className="mb-4">
             <div className="h-4 w-3/4 bg-muted rounded mb-2" />
             <div className="h-3 w-full bg-muted rounded" />
           </div>
         ))}
-      </div>
+      </aside>
     );
   }
 
   return (
-    <div className="glass-card p-6 animate-fade-in">
-      <h3 className="text-lg font-semibold flex items-center gap-2 mb-6">
-        <Newspaper className="w-5 h-5 text-primary" />
-        Market News
-      </h3>
+    <aside className="research-card p-6 animate-fade-in" role="complementary" aria-label="Market news">
+      <h2 className="text-xl font-semibold flex items-center gap-2 mb-5">
+        <Newspaper className="w-5 h-5 text-primary" aria-hidden="true" />
+        News
+      </h2>
 
-      <div className="space-y-4">
-        {news.map((article) => (
+      <div className="space-y-3">
+        {news.map((article, index) => (
           <article
             key={article.id}
-            className="group p-4 rounded-lg bg-muted/30 border border-border/50 hover:border-primary/30 hover:bg-muted/50 transition-all duration-200"
+            className={cn(
+              "news-item p-4 rounded-lg border border-border cursor-pointer",
+              `animate-fade-in delay-${(index + 1) * 100}`
+            )}
+            tabIndex={0}
+            role="article"
           >
             <div className="flex items-start justify-between gap-3 mb-2">
-              <h4 className="text-sm font-medium leading-snug group-hover:text-primary transition-colors">
+              <h3 className="text-sm font-medium leading-snug hover:text-primary transition-colors">
                 {article.title}
-              </h4>
-              <SentimentIcon sentiment={article.sentiment} />
+              </h3>
+              <SentimentIcon sentiment={article.sentiment} score={article.sentimentScore} />
             </div>
             
-            <p className="text-xs text-muted-foreground mb-3 leading-relaxed">
+            <p className="text-caption mb-3 leading-relaxed line-clamp-2">
               {article.summary}
             </p>
             
             <div className="flex items-center justify-between">
-              <div className="flex items-center gap-2 text-xs text-muted-foreground">
+              <div className="flex items-center gap-2 text-caption">
                 <span className="font-medium">{article.source}</span>
-                <span>•</span>
-                <span>{formatTimeAgo(article.publishedAt)}</span>
+                <span aria-hidden="true">•</span>
+                <time dateTime={article.publishedAt.toISOString()}>{formatTimeAgo(article.publishedAt)}</time>
               </div>
-              <button className="p-1.5 rounded-md hover:bg-muted text-muted-foreground hover:text-primary transition-colors">
+              <button 
+                className="p-1.5 rounded-md hover:bg-muted text-muted-foreground hover:text-primary transition-colors"
+                aria-label={`Open article: ${article.title}`}
+              >
                 <ExternalLink className="w-3.5 h-3.5" />
               </button>
             </div>
@@ -89,10 +101,10 @@ export function NewsPanel({ news, loading }: NewsPanelProps) {
 
       {news.length === 0 && (
         <div className="text-center py-8 text-muted-foreground">
-          <Newspaper className="w-10 h-10 mx-auto mb-3 opacity-50" />
-          <p>No news available for this pair</p>
+          <Newspaper className="w-8 h-8 mx-auto mb-2 opacity-50" aria-hidden="true" />
+          <p>No news available</p>
         </div>
       )}
-    </div>
+    </aside>
   );
 }
