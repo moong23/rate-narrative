@@ -10,11 +10,11 @@ interface SignalDisplayProps {
 export function SignalDisplay({ signal, loading }: SignalDisplayProps) {
   if (loading || !signal) {
     return (
-      <div className="glass-card p-6 animate-pulse">
-        <div className="h-6 w-40 bg-muted rounded mb-4" />
-        <div className="h-12 w-32 bg-muted rounded mb-4" />
-        <div className="h-20 w-full bg-muted rounded" />
-      </div>
+      <article className="research-card p-6 animate-pulse">
+        <div className="h-5 w-32 bg-muted rounded mb-4" />
+        <div className="h-10 w-28 bg-muted rounded mb-4" />
+        <div className="h-16 w-full bg-muted rounded" />
+      </article>
     );
   }
 
@@ -22,23 +22,23 @@ export function SignalDisplay({ signal, loading }: SignalDisplayProps) {
     long: {
       label: 'LONG',
       icon: TrendingUp,
-      className: 'signal-long glow-bullish',
+      className: 'signal-long',
       color: 'text-bullish',
-      bgColor: 'bg-bullish/10',
+      bgColor: 'bg-bullish/5',
     },
     short: {
       label: 'SHORT',
       icon: TrendingDown,
-      className: 'signal-short glow-bearish',
+      className: 'signal-short',
       color: 'text-bearish',
-      bgColor: 'bg-bearish/10',
+      bgColor: 'bg-bearish/5',
     },
     neutral: {
       label: 'NEUTRAL',
       icon: Minus,
       className: 'signal-neutral',
       color: 'text-muted-foreground',
-      bgColor: 'bg-muted/50',
+      bgColor: 'bg-muted/30',
     },
   };
 
@@ -46,80 +46,85 @@ export function SignalDisplay({ signal, loading }: SignalDisplayProps) {
   const SignalIcon = config.icon;
 
   return (
-    <div className="glass-card p-6 animate-fade-in">
-      <div className="flex items-center justify-between mb-6">
-        <h3 className="text-lg font-semibold flex items-center gap-2">
-          <Target className="w-5 h-5 text-primary" />
-          Trading Signal
-        </h3>
-        <div className="text-xs text-muted-foreground">
-          Confidence: <span className={config.color}>{signal.confidence}%</span>
-        </div>
+    <article 
+      className="research-card p-6 animate-scale-in" 
+      role="status" 
+      aria-label={`Trading signal: ${signal.recommendation}`}
+      aria-live="polite"
+    >
+      <div className="flex items-center justify-between mb-5">
+        <h2 className="text-xl font-semibold flex items-center gap-2">
+          <Target className="w-5 h-5 text-primary" aria-hidden="true" />
+          Signal
+        </h2>
+        <span className="text-caption">
+          Confidence: <span className={cn('font-medium', config.color)}>{signal.confidence}%</span>
+        </span>
       </div>
 
-      <div className="flex items-center gap-4 mb-6">
+      <div className="flex items-center gap-3 mb-5">
         <div className={cn('signal-badge flex items-center gap-2', config.className)}>
-          <SignalIcon className="w-4 h-4" />
+          <SignalIcon className="w-4 h-4" aria-hidden="true" />
           {config.label}
         </div>
-        <div className={cn('px-3 py-1 rounded-full text-sm font-mono', config.bgColor, config.color)}>
+        <span className={cn('text-sm font-mono font-medium', config.color)}>
           Score: {signal.finalScore.toFixed(2)}
-        </div>
+        </span>
       </div>
 
       {/* Score breakdown */}
-      <div className="grid grid-cols-3 gap-3 mb-6">
-        <div className={cn('p-3 rounded-lg text-center', config.bgColor)}>
-          <div className="flex items-center justify-center gap-1.5 text-xs text-muted-foreground mb-1">
-            <BarChart3 className="w-3.5 h-3.5" />
-            Trend
+      <div className="grid grid-cols-3 gap-3 mb-5">
+        <div className={cn('p-3 rounded-lg text-center border border-border', config.bgColor)}>
+          <div className="flex items-center justify-center gap-1 text-caption mb-1">
+            <BarChart3 className="w-3 h-3" aria-hidden="true" />
+            <span>Trend</span>
           </div>
           <p className={cn('font-mono font-semibold text-lg', 
             signal.trendScore > 0 ? 'text-bullish' : 'text-bearish'
           )}>
             {signal.trendScore > 0 ? '+1' : '-1'}
           </p>
-          <p className="text-xs text-muted-foreground">×0.6</p>
+          <p className="text-caption">×0.6</p>
         </div>
-        <div className={cn('p-3 rounded-lg text-center', config.bgColor)}>
-          <div className="flex items-center justify-center gap-1.5 text-xs text-muted-foreground mb-1">
-            <Newspaper className="w-3.5 h-3.5" />
-            Sentiment
+        <div className={cn('p-3 rounded-lg text-center border border-border', config.bgColor)}>
+          <div className="flex items-center justify-center gap-1 text-caption mb-1">
+            <Newspaper className="w-3 h-3" aria-hidden="true" />
+            <span>News</span>
           </div>
           <p className={cn('font-mono font-semibold text-lg',
             signal.newsScore > 0 ? 'text-bullish' : signal.newsScore < 0 ? 'text-bearish' : 'text-muted-foreground'
           )}>
             {signal.newsScore > 0 ? '+' : ''}{signal.newsScore.toFixed(2)}
           </p>
-          <p className="text-xs text-muted-foreground">×0.4</p>
+          <p className="text-caption">×0.4</p>
         </div>
-        <div className={cn('p-3 rounded-lg text-center', config.bgColor)}>
-          <div className="flex items-center justify-center gap-1.5 text-xs text-muted-foreground mb-1">
-            <Zap className="w-3.5 h-3.5" />
-            Vol Penalty
+        <div className={cn('p-3 rounded-lg text-center border border-border', config.bgColor)}>
+          <div className="flex items-center justify-center gap-1 text-caption mb-1">
+            <Zap className="w-3 h-3" aria-hidden="true" />
+            <span>Vol</span>
           </div>
           <p className="font-mono font-semibold text-lg text-muted-foreground">
             -{signal.volatilityPenalty}
           </p>
-          <p className="text-xs text-muted-foreground">×0.2</p>
+          <p className="text-caption">×0.2</p>
         </div>
       </div>
 
-      {/* Rationale bullets */}
-      <div className="p-4 rounded-lg bg-muted/30 border border-border/50">
-        <h4 className="text-sm font-medium mb-3 text-muted-foreground">Why this signal?</h4>
-        <ul className="space-y-2.5">
+      {/* Rationale */}
+      <div className="p-4 rounded-lg bg-muted/30 border border-border">
+        <h3 className="text-sm font-medium mb-3 text-muted-foreground">Why this signal?</h3>
+        <ul className="space-y-2">
           {signal.rationale.map((point, i) => (
-            <li key={i} className="text-sm leading-relaxed text-foreground/90">
+            <li key={i} className="text-sm leading-relaxed">
               {point}
             </li>
           ))}
         </ul>
       </div>
 
-      <p className="mt-4 text-xs text-muted-foreground text-center">
+      <p className="mt-4 text-caption text-center" role="note">
         ⚠️ For research purposes only. Not financial advice.
       </p>
-    </div>
+    </article>
   );
 }

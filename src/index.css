@@ -2,73 +2,119 @@
 @tailwind components;
 @tailwind utilities;
 
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
+
+/* 
+  Design System: Calm Research Terminal
+  Emotional tone: Bloomberg meets Apple Notes
+  Typography: Inter (1.25x modular scale)
+  Spacing: 8pt grid
+*/
 
 @layer base {
   :root {
-    --background: 222 47% 6%;
-    --foreground: 210 40% 96%;
+    /* Core palette - Light mode (default) */
+    --background: 210 20% 98%; /* #F8F9FA - Soft light gray */
+    --foreground: 0 0% 10%; /* #1A1A1A - Dark gray text */
 
-    --card: 222 47% 9%;
-    --card-foreground: 210 40% 96%;
+    --card: 0 0% 100%; /* Pure white cards */
+    --card-foreground: 0 0% 10%;
 
-    --popover: 222 47% 9%;
-    --popover-foreground: 210 40% 96%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 0 0% 10%;
 
-    --primary: 187 85% 53%;
-    --primary-foreground: 222 47% 6%;
+    --primary: 217 91% 60%; /* #3B82F6 - Accent blue */
+    --primary-foreground: 0 0% 100%;
 
-    --secondary: 222 30% 14%;
-    --secondary-foreground: 210 40% 90%;
+    --secondary: 210 20% 96%;
+    --secondary-foreground: 0 0% 20%;
 
-    --muted: 222 30% 18%;
-    --muted-foreground: 215 20% 55%;
+    --muted: 210 15% 93%;
+    --muted-foreground: 215 14% 45%; /* #9CA3AF - Neutral gray */
 
-    --accent: 222 30% 16%;
-    --accent-foreground: 210 40% 96%;
+    --accent: 210 20% 96%;
+    --accent-foreground: 0 0% 10%;
 
-    --destructive: 0 72% 51%;
-    --destructive-foreground: 210 40% 98%;
+    --destructive: 0 84% 60%; /* #EF4444 - Warning red */
+    --destructive-foreground: 0 0% 100%;
 
-    --border: 222 30% 18%;
-    --input: 222 30% 14%;
-    --ring: 187 85% 53%;
+    --border: 210 15% 90%;
+    --input: 210 15% 90%;
+    --ring: 217 91% 60%;
 
-    --radius: 0.75rem;
+    --radius: 0.5rem;
 
-    /* Custom semantic tokens */
-    --bullish: 142 71% 45%;
-    --bullish-foreground: 142 71% 95%;
-    --bearish: 0 84% 60%;
-    --bearish-foreground: 0 84% 95%;
-    --neutral: 215 20% 55%;
-    --neutral-foreground: 215 20% 95%;
+    /* Semantic signal colors */
+    --bullish: 160 84% 39%; /* #10B981 - Success green */
+    --bullish-foreground: 0 0% 100%;
+    --bearish: 0 84% 60%; /* #EF4444 - Warning red */
+    --bearish-foreground: 0 0% 100%;
+    --neutral: 215 14% 64%; /* #9CA3AF - Neutral gray */
+    --neutral-foreground: 0 0% 100%;
 
-    /* Gradients */
-    --gradient-primary: linear-gradient(135deg, hsl(187 85% 53%) 0%, hsl(199 89% 48%) 100%);
-    --gradient-card: linear-gradient(180deg, hsl(222 47% 11%) 0%, hsl(222 47% 8%) 100%);
-    --gradient-bullish: linear-gradient(135deg, hsl(142 71% 45%) 0%, hsl(160 84% 39%) 100%);
-    --gradient-bearish: linear-gradient(135deg, hsl(0 84% 60%) 0%, hsl(15 90% 55%) 100%);
+    /* Shadows - subtle and professional */
+    --shadow-sm: 0 1px 2px hsl(0 0% 0% / 0.04);
+    --shadow-md: 0 4px 12px hsl(0 0% 0% / 0.06);
+    --shadow-lg: 0 8px 24px hsl(0 0% 0% / 0.08);
 
-    /* Shadows */
-    --shadow-glow: 0 0 40px hsl(187 85% 53% / 0.15);
-    --shadow-card: 0 4px 24px hsl(222 47% 4% / 0.4);
-    --shadow-bullish: 0 0 20px hsl(142 71% 45% / 0.3);
-    --shadow-bearish: 0 0 20px hsl(0 84% 60% / 0.3);
-
-    --sidebar-background: 222 47% 8%;
-    --sidebar-foreground: 210 40% 96%;
-    --sidebar-primary: 187 85% 53%;
-    --sidebar-primary-foreground: 222 47% 6%;
-    --sidebar-accent: 222 30% 14%;
-    --sidebar-accent-foreground: 210 40% 96%;
-    --sidebar-border: 222 30% 18%;
-    --sidebar-ring: 187 85% 53%;
+    --sidebar-background: 210 20% 98%;
+    --sidebar-foreground: 0 0% 10%;
+    --sidebar-primary: 217 91% 60%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 210 20% 96%;
+    --sidebar-accent-foreground: 0 0% 10%;
+    --sidebar-border: 210 15% 90%;
+    --sidebar-ring: 217 91% 60%;
   }
 
   .dark {
-    --background: 222 47% 6%;
-    --foreground: 210 40% 96%;
+    --background: 0 0% 7%; /* #121212 - Dark charcoal */
+    --foreground: 210 20% 96%;
+
+    --card: 0 0% 10%;
+    --card-foreground: 210 20% 96%;
+
+    --popover: 0 0% 10%;
+    --popover-foreground: 210 20% 96%;
+
+    --primary: 217 91% 60%;
+    --primary-foreground: 0 0% 100%;
+
+    --secondary: 0 0% 14%;
+    --secondary-foreground: 210 20% 90%;
+
+    --muted: 0 0% 16%;
+    --muted-foreground: 215 14% 60%;
+
+    --accent: 0 0% 14%;
+    --accent-foreground: 210 20% 96%;
+
+    --destructive: 0 72% 51%;
+    --destructive-foreground: 0 0% 100%;
+
+    --border: 0 0% 18%;
+    --input: 0 0% 18%;
+    --ring: 217 91% 60%;
+
+    --bullish: 160 84% 39%;
+    --bullish-foreground: 0 0% 100%;
+    --bearish: 0 72% 51%;
+    --bearish-foreground: 0 0% 100%;
+    --neutral: 215 14% 50%;
+    --neutral-foreground: 0 0% 100%;
+
+    --shadow-sm: 0 1px 2px hsl(0 0% 0% / 0.2);
+    --shadow-md: 0 4px 12px hsl(0 0% 0% / 0.3);
+    --shadow-lg: 0 8px 24px hsl(0 0% 0% / 0.4);
+
+    --sidebar-background: 0 0% 7%;
+    --sidebar-foreground: 210 20% 96%;
+    --sidebar-primary: 217 91% 60%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 0 0% 14%;
+    --sidebar-accent-foreground: 210 20% 96%;
+    --sidebar-border: 0 0% 18%;
+    --sidebar-ring: 217 91% 60%;
   }
 }
 
@@ -77,56 +123,100 @@
     @apply border-border;
   }
 
+  html {
+    font-size: 16px;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
   body {
-    @apply bg-background text-foreground antialiased;
-    font-family: 'Inter', system-ui, sans-serif;
+    @apply bg-background text-foreground;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    line-height: 1.5;
+  }
+
+  /* Typography scale - 1.25x modular */
+  h1 {
+    @apply text-[1.75rem] font-bold leading-tight tracking-tight;
+  }
+
+  h2 {
+    @apply text-xl font-semibold leading-snug;
+  }
+
+  h3 {
+    @apply text-base font-semibold;
   }
 
   .font-mono {
-    font-family: 'JetBrains Mono', monospace;
+    font-family: 'JetBrains Mono', ui-monospace, monospace;
+  }
+
+  /* Focus rings for accessibility */
+  :focus-visible {
+    @apply outline-none ring-2 ring-primary ring-offset-2 ring-offset-background;
   }
 }
 
 @layer components {
-  .glass-card {
-    @apply bg-card/80 backdrop-blur-xl border border-border/50 rounded-xl;
-    box-shadow: var(--shadow-card);
+  /* Card system - clean, professional */
+  .research-card {
+    @apply bg-card rounded-lg border border-border;
+    box-shadow: var(--shadow-sm);
+    transition: box-shadow 0.2s ease, transform 0.2s ease;
   }
 
-  .glow-primary {
-    box-shadow: var(--shadow-glow);
+  .research-card:hover {
+    box-shadow: var(--shadow-md);
   }
 
-  .glow-bullish {
-    box-shadow: var(--shadow-bullish);
-  }
-
-  .glow-bearish {
-    box-shadow: var(--shadow-bearish);
-  }
-
-  .rate-number {
-    @apply font-mono text-2xl font-semibold tracking-tight;
-  }
-
+  /* Signal badges */
   .signal-badge {
-    @apply px-4 py-2 rounded-full font-semibold text-sm uppercase tracking-wider;
+    @apply px-3 py-1.5 rounded-md text-sm font-semibold uppercase tracking-wide;
   }
 
   .signal-long {
-    @apply bg-bullish/20 text-bullish border border-bullish/30;
+    @apply bg-bullish/10 text-bullish border border-bullish/20;
   }
 
   .signal-short {
-    @apply bg-bearish/20 text-bearish border border-bearish/30;
+    @apply bg-bearish/10 text-bearish border border-bearish/20;
   }
 
   .signal-neutral {
     @apply bg-muted text-muted-foreground border border-border;
   }
+
+  /* Rate display */
+  .rate-number {
+    @apply font-mono text-2xl font-semibold tracking-tight;
+  }
+
+  /* KPI metrics */
+  .kpi-card {
+    @apply bg-card rounded-lg border border-border p-4;
+    box-shadow: var(--shadow-sm);
+  }
+
+  /* News item hover */
+  .news-item {
+    @apply transition-all duration-200 ease-out;
+  }
+
+  .news-item:hover {
+    @apply bg-muted/50;
+    transform: scale(1.01);
+    box-shadow: var(--shadow-sm);
+  }
+
+  /* PDF button glow */
+  .pdf-button:hover {
+    box-shadow: 0 0 16px hsl(var(--primary) / 0.25);
+  }
 }
 
 @layer utilities {
+  /* Signal colors */
   .text-bullish {
     color: hsl(var(--bullish));
   }
@@ -151,23 +241,62 @@
     border-color: hsl(var(--bearish));
   }
 
-  .animate-pulse-slow {
-    animation: pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  /* Smooth animations - max 300ms */
+  .animate-fade-in {
+    animation: fade-in 0.3s ease-out forwards;
   }
 
-  .animate-shimmer {
-    animation: shimmer 2s linear infinite;
-    background: linear-gradient(
-      90deg,
-      hsl(var(--muted)) 0%,
-      hsl(var(--accent)) 50%,
-      hsl(var(--muted)) 100%
-    );
-    background-size: 200% 100%;
+  .animate-scale-in {
+    animation: scale-in 0.25s ease-out forwards;
   }
 
-  @keyframes shimmer {
-    0% { background-position: 200% 0; }
-    100% { background-position: -200% 0; }
+  .animate-slide-up {
+    animation: slide-up 0.3s ease-out forwards;
+  }
+
+  @keyframes fade-in {
+    from {
+      opacity: 0;
+      transform: translateY(8px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes scale-in {
+    from {
+      opacity: 0;
+      transform: scale(0.96);
+    }
+    to {
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
+
+  @keyframes slide-up {
+    from {
+      opacity: 0;
+      transform: translateY(16px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  /* Staggered animation delays */
+  .delay-50 { animation-delay: 50ms; }
+  .delay-100 { animation-delay: 100ms; }
+  .delay-150 { animation-delay: 150ms; }
+  .delay-200 { animation-delay: 200ms; }
+  .delay-250 { animation-delay: 250ms; }
+  .delay-300 { animation-delay: 300ms; }
+
+  /* Caption text */
+  .text-caption {
+    @apply text-[0.8125rem] text-muted-foreground;
   }
 }
