@@ -1,6 +1,10 @@
-import { Activity, TrendingUp } from 'lucide-react';
+import { Activity, TrendingUp, Moon, Sun } from 'lucide-react';
+import { useTheme } from 'next-themes';
+import { Button } from '@/components/ui/button';
 
 export function Header() {
+  const { theme, setTheme } = useTheme();
+
   return (
     <header className="border-b border-border bg-card/80 backdrop-blur-sm sticky top-0 z-50" role="banner">
       <div className="container mx-auto px-6 py-4">
@@ -21,6 +25,17 @@ export function Header() {
               <span>Live Data</span>
               <span className="w-2 h-2 bg-bullish rounded-full animate-pulse" aria-label="Live indicator" />
             </div>
+            
+            <Button
+              variant="ghost"
+              size="icon"
+              onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
+              aria-label="Toggle theme"
+              className="h-9 w-9"
+            >
+              <Sun className="h-4 w-4 rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0" />
+              <Moon className="absolute h-4 w-4 rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100" />
+            </Button>
             
             <div className="px-3 py-1.5 rounded-md bg-muted/50 text-caption font-medium" role="note">
               Research Only
