@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Header } from '@/components/Header';
 import { CurrencySelector } from '@/components/CurrencySelector';
+import { MarketComment } from '@/components/MarketComment';
 import { KPIRow } from '@/components/KPIRow';
 import { RateDisplay } from '@/components/RateDisplay';
 import { PriceChart } from '@/components/PriceChart';
@@ -13,17 +14,24 @@ import { useFXCalendar } from '@/hooks/useFXCalendar';
 import { useSignals } from '@/hooks/useSignals';
 import { generateMockNews } from '@/data/mockNews';
 import { CurrencyPair, CURRENCY_PAIRS, TimeRange } from '@/types/fx';
+import { ToneAgentId } from '@/types/toneAgent';
 import { RefreshCw, AlertCircle } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 
 const Index = () => {
   const [selectedPair, setSelectedPair] = useState<CurrencyPair>(CURRENCY_PAIRS[0]);
   const [timeRange, setTimeRange] = useState<TimeRange>('1M');
+  const [toneAgent, setToneAgent] = useState<ToneAgentId>('pro');
   
   const { currentRate, historicalRates, kpiMetrics, loading, error, refetch } = useFXData(selectedPair, timeRange);
   const { events: calendarEvents, loading: calendarLoading } = useFXCalendar(selectedPair);
   const news = generateMockNews(selectedPair.id);
   const signal = useSignals(selectedPair, kpiMetrics, news);
+  
+  // Calculate trend direction for market comment
+  const trendDirection = kpiMetrics 
+    ? (kpiMetrics.ma7 > kpiMetrics.ma30 ? 1 : kpiMetrics.ma7 < kpiMetrics.ma30 ? -1 : 0)
+    : 0;
 
   return (
     <div className="min-h-screen bg-background">
@@ -64,6 +72,15 @@ const Index = () => {
           </div>
           
           <CurrencySelector selected={selectedPair} onSelect={setSelectedPair} />
+          
+          {/* Market Comment - One-liner below pair buttons */}
+          <MarketComment 
+            pair={selectedPair}
+            agentId={toneAgent}
+            onAgentChange={setToneAgent}
+            trend={trendDirection}
+            events={calendarEvents}
+          />
         </section>
 
         {/* Error State */}
