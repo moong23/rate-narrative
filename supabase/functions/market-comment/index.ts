@@ -6,11 +6,11 @@ const corsHeaders = {
 };
 
 const TONE_STYLES: Record<string, string> = {
-  pro: "Write in a neutral analyst tone, like a Bloomberg FX strategist. Keep it professional and data-driven.",
-  cheerful: "Write in a friendly, emoji-rich tone for a curious beginner. Be encouraging and positive. Use 1-2 relevant emojis.",
-  dry: "Write in a sarcastic, blunt tone with short sentences. Be witty but not mean.",
-  professor: "Write like a macroeconomics professor—formal and precise. Include a brief educational insight.",
-  zen: "Write like a calm, meditative monk observing the market. Be philosophical and balanced."
+  pro: "블룸버그 FX 전략가처럼 중립적이고 차분한 분석가 톤으로 작성하세요. 전문적이고 데이터 중심으로.",
+  cheerful: "초보자를 위해 친근하고 이모지가 풍부한 톤으로 작성하세요. 격려하고 긍정적으로. 1-2개의 관련 이모지를 사용하세요.",
+  dry: "비꼬는 듯하고 무심한 톤으로 짧은 문장으로 작성하세요. 재치있지만 악의적이지 않게.",
+  professor: "거시경제학 교수처럼 격식있고 정확하게 작성하세요. 간단한 교육적 인사이트를 포함하세요.",
+  zen: "시장을 관찰하는 차분한 명상가처럼 작성하세요. 철학적이고 균형잡힌 시각으로."
 };
 
 serve(async (req) => {
@@ -27,12 +27,12 @@ serve(async (req) => {
     }
 
     const style = TONE_STYLES[agentId] || TONE_STYLES.pro;
-    const trendText = trend > 0 ? "bullish" : trend < 0 ? "bearish" : "neutral";
-    const eventsList = events?.length > 0 ? `Today's key events: ${events.join(", ")}` : "";
+    const trendText = trend > 0 ? "상승세" : trend < 0 ? "하락세" : "보합세";
+    const eventsList = events?.length > 0 ? `오늘의 주요 이벤트: ${events.join(", ")}` : "";
 
-    const systemPrompt = `You are a market commentator for an FX dashboard. Generate exactly ONE sentence (max 100 characters) about today's market outlook. ${style}`;
+    const systemPrompt = `당신은 FX 대시보드의 시장 해설가입니다. 오늘의 시장 전망에 대해 정확히 한 문장(최대 80자)으로 한국어로 작성하세요. ${style}`;
     
-    const userPrompt = `Generate a one-sentence market comment for ${pairName}. Current trend: ${trendText}. ${eventsList}. Keep it under 100 characters.`;
+    const userPrompt = `${pairName}에 대한 한 문장 시장 코멘트를 한국어로 작성하세요. 현재 추세: ${trendText}. ${eventsList}. 80자 이내로 작성하세요.`;
 
     const response = await fetch("https://ai.gateway.lovable.dev/v1/chat/completions", {
       method: "POST",
